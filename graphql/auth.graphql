@@ -1,0 +1,10 @@
+query GetMe {
+  me {
+    id
+    email
+    firstName
+    lastName
+    isActive
+    # Add any other user fields you want to load on app startup
+  }
+}

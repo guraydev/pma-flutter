@@ -1,0 +1,184 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateProjectInput {
+  description: String
+  name: String!
+}
+
+input CreateTaskInput {
+  """ID of the user this task is assigned to (optional)."""
+  assigneeId: ID
+  description: String
+  dueDate: String
+
+  """Priority of the task, defaults to MEDIUM if not provided."""
+  priority: TaskPriority
+
+  """ID of the project this task belongs to."""
+  projectId: ID!
+
+  """Initial status of the task, defaults to TODO if not provided."""
+  status: TaskStatus
+  title: String!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String
+  lastName: String
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+  user: User!
+}
+
+type Mutation {
+  """Create a new project for the authenticated user."""
+  createProject(createProjectInput: CreateProjectInput!): Project!
+
+  """Create a new task within a specified project."""
+  createTask(createTaskInput: CreateTaskInput!): Task!
+
+  """Delete a project owned by the authenticated user."""
+  deleteProject(id: ID!): Project!
+
+  """Delete a task."""
+  deleteTask(id: ID!): Task!
+
+  """Logs a user in and returns an access token."""
+  login(loginInput: LoginInput!): LoginResponse!
+
+  """Registers a new user."""
+  register(createUserInput: CreateUserInput!): User!
+
+  """Remove a user. (Protected - Admin Role Required)"""
+  removeUser(id: ID!): User!
+
+  """Update an existing project owned by the authenticated user."""
+  updateProject(id: ID!, updateProjectInput: UpdateProjectInput!): Project!
+
+  """Update an existing task."""
+  updateTask(id: ID!, updateTaskInput: UpdateTaskInput!): Task!
+
+  """Update a user. (Protected - Self or Admin)"""
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
+}
+
+type Project {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  ownerId: ID!
+  tasks: [Task]
+  updatedAt: DateTime!
+}
+
+type Query {
+  """Returns the currently authenticated user."""
+  me: User!
+
+  """Get all projects for the authenticated user."""
+  myProjects: [Project!]!
+
+  """Get a specific project by ID, owned by the authenticated user."""
+  projectById(id: ID!): Project!
+
+  """Get a specific task by its ID."""
+  taskById(id: ID!): Task!
+
+  """Get all tasks for a specific project."""
+  tasksByProjectId(projectId: ID!): [Task!]!
+
+  """Get a single user by ID. (Protected)"""
+  user(id: ID!): User!
+
+  """Get all users. (Protected)"""
+  users: [User!]!
+}
+
+type Task {
+  assignee: User
+  assigneeId: ID
+  createdAt: DateTime!
+  description: String
+  dueDate: DateTime
+  id: ID!
+  priority: TaskPriority!
+  project: Project!
+  projectId: ID!
+  reporter: User
+  reporterId: ID
+  status: TaskStatus!
+  title: String!
+  updatedAt: DateTime!
+}
+
+"""Possible priorities for a task"""
+enum TaskPriority {
+  CRITICAL
+  HIGH
+  LOW
+  MEDIUM
+}
+
+"""Possible statuses for a task"""
+enum TaskStatus {
+  BLOCKED
+  DONE
+  IN_PROGRESS
+  IN_REVIEW
+  TODO
+}
+
+input UpdateProjectInput {
+  description: String
+  name: String
+}
+
+input UpdateTaskInput {
+  """
+  ID of the user this task is assigned to (optional, pass null to unassign).
+  """
+  assigneeId: ID
+  description: String
+  dueDate: String
+  priority: TaskPriority
+  status: TaskStatus
+  title: String
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  isActive: Boolean
+  lastName: String
+  newPassword: String
+}
+
+type User {
+  assignedTasks: [Task]
+  createdAt: DateTime!
+  email: String!
+  firstName: String
+  id: ID!
+  isActive: Boolean!
+  lastName: String
+  projects: [Project]
+  reportedTasks: [Task]
+  updatedAt: DateTime!
+}

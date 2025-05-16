@@ -1,0 +1,110 @@
+# --------------- Task Queries ---------------
+
+query GetTasksForProject($projectId: ID!) {
+  tasksByProjectId(projectId: $projectId) {
+    id
+    title
+    description
+    status
+    priority
+    dueDate
+    createdAt
+    updatedAt
+    projectId
+    reporterId
+    assigneeId
+    # If you want to fetch full assignee/reporter objects directly here (and exposed them in backend Task type):
+    # assignee { id email firstName }
+    # reporter { id email firstName }
+  }
+}
+
+query GetTaskById($taskId: ID!) {
+  taskById(id: $taskId) {
+    id
+    title
+    description
+    status
+    priority
+    dueDate
+    createdAt
+    updatedAt
+    projectId
+    project { # Assuming project object is queryable on Task type
+      id
+      name
+    }
+    reporterId
+    # reporter { id email }
+    assigneeId
+    # assignee { id email }
+  }
+}
+
+# --------------- Task Mutations ---------------
+
+mutation CreateTask(
+  $title: String!,
+  $projectId: ID!,
+  $description: String,
+  $status: TaskStatus, # Ensure TaskStatus enum is in your schema.gql
+  $priority: TaskPriority, # Ensure TaskPriority enum is in your schema.gql
+  $dueDate: DateTime, # Or String if you send ISO string, ensure type matches backend
+  $assigneeId: ID
+) {
+  createTask(createTaskInput: {
+    title: $title,
+    projectId: $projectId,
+    description: $description,
+    status: $status,
+    priority: $priority,
+    dueDate: $dueDate,
+    assigneeId: $assigneeId
+  }) {
+    id
+    title
+    description
+    status
+    priority
+    dueDate
+    projectId
+    reporterId # Will be set by backend based on authenticated user
+    assigneeId
+    createdAt
+  }
+}
+
+mutation UpdateTask(
+  $taskId: ID!,
+  $title: String,
+  $description: String,
+  $status: TaskStatus,
+  $priority: TaskPriority,
+  $dueDate: DateTime, # Or String
+  $assigneeId: ID # Pass null to unassign if your backend DTO handles it
+) {
+  updateTask(id: $taskId, updateTaskInput: {
+    title: $title,
+    description: $description,
+    status: $status,
+    priority: $priority,
+    dueDate: $dueDate,
+    assigneeId: $assigneeId
+  }) {
+    id
+    title
+    description
+    status
+    priority
+    dueDate
+    assigneeId
+    updatedAt
+  }
+}
+
+mutation DeleteTask($taskId: ID!) {
+  deleteTask(id: $taskId) {
+    id # To confirm which task was deleted
+    title
+  }
+}

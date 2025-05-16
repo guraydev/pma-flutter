@@ -1,0 +1,44 @@
+# pubspec.yaml
+name: frontend
+description: "A professional project management application."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0' # Ensure this matches your Flutter/Dart SDK
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ... other direct dependencies like riverpod, go_router, graphql_flutter etc.
+  cupertino_icons: ^1.0.2
+  flutter_riverpod: ^2.5.1 # Example version, use your actual
+  hooks_riverpod: ^2.5.1   # Example version
+  go_router: ^14.2.0        # Example version
+  graphql_flutter: ^5.2.0-beta.6 # Example version
+  flutter_dotenv: ^5.1.0
+  shared_preferences: ^2.2.3
+  intl: ^0.19.0
+  dio: ^5.4.3
+
+  freezed_annotation: ^2.4.1 # CRITICAL: Must be in 'dependencies'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0 # Example version
+
+  build_runner: ^2.4.11       # Example version
+  # json_serializable is needed if you use @JsonSerializable with freezed
+  json_serializable: ^6.8.0  # Example version
+
+  freezed: ^2.5.2            # CRITICAL: The generator, must be in 'dev_dependencies'
+
+  # ... other dev_dependencies like riverpod_generator, graphql_codegen etc.
+  riverpod_generator: ^2.4.0
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
+  graphql_codegen: ^0.13.0
+
+# ... (flutter section) ...

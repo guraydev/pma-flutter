@@ -1,0 +1,64 @@
+# Queries for Projects
+
+query GetMyProjects {
+  myProjects {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    # ownerId # if needed directly, though often implicit
+  }
+}
+
+query GetProjectById($id: ID!) {
+  projectById(id: $id) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    ownerId
+    # If you want to fetch the owner details along with the project:
+    # owner {
+    #   id
+    #   email
+    #   firstName
+    # }
+  }
+}
+
+# Mutations for Projects
+
+mutation CreateProject($name: String!, $description: String) {
+  createProject(createProjectInput: {
+    name: $name,
+    description: $description
+  }) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    ownerId
+  }
+}
+
+mutation UpdateProject($id: ID!, $name: String, $description: String) {
+  updateProject(id: $id, updateProjectInput: {
+    name: $name,
+    description: $description
+  }) {
+    id
+    name
+    description
+    updatedAt
+  }
+}
+
+mutation DeleteProject($id: ID!) {
+  deleteProject(id: $id) {
+    id # To confirm which project was deleted
+    name
+  }
+}

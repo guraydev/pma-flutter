@@ -1,0 +1,25 @@
+targets:
+  $default:
+    builders:
+      # Using the simple package name as the builder key
+      graphql_codegen:
+        enabled: true # Ensure it's enabled
+        options:
+          # Path to your GraphQL schema file (relative to project root)
+          schema: graphql/schema.gql
+
+          # Path where the generated Dart files will be placed
+          output: lib/core/api/generated/
+
+          # Glob pattern for your .graphql files containing operations
+          documents: graphql/**/*.graphql
+
+          # Client preset for graphql_flutter
+          client: graphql_flutter
+
+          # Optional: Define custom Dart types for GraphQL scalars if needed
+          scalars:
+            UUID:
+              type: String
+            DateTime:
+              type: String
